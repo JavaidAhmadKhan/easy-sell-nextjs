@@ -19,8 +19,8 @@ const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <Link href={`/products/${id}`}>
-      <div className="max-w-lg bg-gray-953 rounded-sm overflow-hidden h-full flex flex-col justify-between">
-        <div>
+      <div className="max-w-lg bg-gray-953 rounded-sm overflow-hidden h-full flex flex-col justify-between transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300">
+        <div className="">
           <div className="relative h-96 bg-center ">
             <Image
               // src={getImageUrl(imageUrl)}
@@ -35,7 +35,7 @@ const Card: React.FC<CardProps> = ({
             />
           </div>
           <div className="px-6 py-4">
-            <div className="text-2xl mb-2 uppercase line-clamp-2">{name}</div>
+            <div className="text-xl mb-2 uppercase line-clamp-2">{name}</div>
             <p className="text-gray-700 text-base truncate uppercase">
               {description}
             </p>
