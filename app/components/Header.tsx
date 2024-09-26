@@ -5,13 +5,15 @@ export default function Header({ font }: { font: string }) {
     <header className="py-2 bg-gray-952 ">
       <div className="max-w-[100rem] px-12 mx-auto flex justify-between">
         <Link href="/">
-          <h1 className={`uppercase text-yellow-500 text-center py-2 ${font}`}>
+          <h1
+            className={`uppercase text-yellow-500 font-semibold text-center py-2 ${font}`}
+          >
             Easy Sell
           </h1>
         </Link>
         <Link
           href="/products/upload"
-          className="uppercase text-green-951 text-xl py-2 hover:text-yellow-700"
+          className="uppercase text-green-951 text-xl py-2 font-semibold hover:text-yellow-700"
         >
           Upload {">"}
         </Link>
