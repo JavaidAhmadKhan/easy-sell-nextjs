@@ -1,71 +1,28 @@
+import { createClient } from "@/supabase/client";
 import Card from "./components/Card";
+import NotFound from "./not-found";
 
-export default function Home() {
-  const products = [
-    {
-      id: 1,
-      name: "Mushroom Orange Lamp ",
-      description: "Mushroom Orange Lamp Description",
-      price: 499,
-      imageUrl: "https://m.media-amazon.com/images/I/41PkIt6wYCL._AC_.jpg",
-    },
-    {
-      id: 2,
-      name: "Mushroom Orange Lamp ",
-      description: "Mushroom Orange Lamp Description",
-      price: 499,
-      imageUrl: "https://m.media-amazon.com/images/I/41PkIt6wYCL._AC_.jpg",
-    },
-    {
-      id: 3,
-      name: "Mushroom Orange Lamp ",
-      description: "Mushroom Orange Lamp Description",
-      price: 499,
-      imageUrl: "https://m.media-amazon.com/images/I/41PkIt6wYCL._AC_.jpg",
-    },
-    {
-      id: 4,
-      name: "Mushroom Orange Lamp ",
-      description: "Mushroom Orange Lamp Description",
-      price: 499,
-      imageUrl: "https://m.media-amazon.com/images/I/41PkIt6wYCL._AC_.jpg",
-    },
-    {
-      id: 5,
-      name: "Mushroom Orange Lamp ",
-      description: "Mushroom Orange Lamp Description",
-      price: 499,
-      imageUrl: "https://m.media-amazon.com/images/I/41PkIt6wYCL._AC_.jpg",
-    },
-    {
-      id: 6,
-      name: "Mushroom Orange Lamp ",
-      description: "Mushroom Orange Lamp Description",
-      price: 499,
-      imageUrl: "https://m.media-amazon.com/images/I/41PkIt6wYCL._AC_.jpg",
-    },
-    {
-      id: 7,
-      name: "Mushroom Orange Lamp ",
-      description: "Mushroom Orange Lamp Description",
-      price: 499,
-      imageUrl: "https://m.media-amazon.com/images/I/41PkIt6wYCL._AC_.jpg",
-    },
-    {
-      id: 8,
-      name: "Mushroom Orange Lamp ",
-      description: "Mushroom Orange Lamp Description",
-      price: 499,
-      imageUrl: "https://m.media-amazon.com/images/I/41PkIt6wYCL._AC_.jpg",
-    },
-    {
-      id: 9,
-      name: "Mushroom Orange Lamp ",
-      description: "Mushroom Orange Lamp Description",
-      price: 499,
-      imageUrl: "https://m.media-amazon.com/images/I/41PkIt6wYCL._AC_.jpg",
-    },
-  ];
+export const revalidate = 3600;
+export default async function Home() {
+  const supabase = createClient();
+
+  const { data: topProducts, error: topProductsError } = await supabase
+    .from("easysell-products")
+    .select()
+    .eq("boost", true);
+
+  const { data: products, error } = await supabase
+    .from("easysell-products")
+    .select();
+
+  if (!topProducts) {
+    return <p>No topProducts found!</p>;
+  }
+
+  if (!products) {
+    return <NotFound />;
+  }
+
   return (
     <main className="min-h-screen max-w-[100rem] mx-auto">
       <div className="px-12 pt-12 pb-20">
@@ -74,27 +31,29 @@ export default function Home() {
             <h2 className="text-4xl mb-16">OUR TOP PRODUCTS</h2>
             <p className="text-xl">You can pay to boost your products here.</p>
           </div>
-          {/* <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 xl:gap-12">
-            {topProducts &&
-              topProducts.map((item, idx) => (
-                <Card id={item.id} key={`${item.name}-${idx}`} {...item} />
-              ))}
-          </div> */}
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 xl:gap-12">
-            {products &&
-              products
-                .slice(0, 3)
-                .map((item, idx) => (
-                  <Card id={item.id} key={`${item.name}-${idx}`} {...item} />
-                ))}
+            {topProducts &&
+              topProducts.map((product, idx) => (
+                <Card
+                  id={product.id}
+                  key={`${product.name}-${idx}`}
+                  {...product}
+                  imageUrl={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/STORAGE/${product.imageUrl}`}
+                />
+              ))}
           </div>
         </div>
 
         <h2 className="text-4xl mt-20 mb-16">ALL PRODUCTS</h2>
         {products && products.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {products.map((item, idx) => (
-              <Card id={item.id} key={`${item.name}-${idx}`} {...item} />
+            {products.map((product, idx) => (
+              <Card
+                id={product.id}
+                key={`${product.name}-${idx}`}
+                {...product}
+                imageUrl={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/STORAGE/${product.imageUrl}`}
+              />
             ))}
           </div>
         ) : (
