@@ -6,11 +6,13 @@ export const revalidate = 3600;
 export default async function Home() {
   const supabase = createClient();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: topProducts, error: topProductsError } = await supabase
     .from("easysell-products")
     .select()
     .eq("boost", true);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: products, error } = await supabase
     .from("easysell-products")
     .select();
